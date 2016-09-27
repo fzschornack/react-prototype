@@ -2,13 +2,30 @@ import React from 'react';
 import ReactList from 'react-list';
 import SearchField from './SearchField'
 import DatasetCard from './DatasetCard'
+import Radium from 'radium'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-export default class MyInfinityScrollList extends React.Component {
-    state = {
-        datasets: []
-    };
+var styles = {
+    datasets: {
+        textAlign: 'center'
+    },
+    reactList: {
+        textAlign: 'left',
+        overflow: 'auto',
+        height: '100%'
+    },
+    card: {
+        margin: '20px'
+    }
+};
+
+class DatasetsScrollList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {datasets: []};
+    }
 
     searchDatasets(datasets) {
         this.setState({datasets});
@@ -16,26 +33,30 @@ export default class MyInfinityScrollList extends React.Component {
 
     renderItem(index, key) {
         const dataset = this.state.datasets[index];
-        return <div key={key}>
+        return <div key={key} style={styles.card}>
             <MuiThemeProvider>
-                <DatasetCard title={dataset.title} description={dataset.description} />
+                <DatasetCard
+                    title={dataset.title}
+                    description={dataset.description}
+                    processedSample={dataset.processedSample}/>
             </MuiThemeProvider>
         </div>;
     }
 
     render() {
         return (
-            <div>
-                <h1>Datasets</h1>
+            <div style={styles.datasets}>
                 <SearchField searchDatasets={this.searchDatasets.bind(this)} />
-                <div style={{overflow: 'auto', maxHeight: 600}}>
+                <div style={styles.reactList}>
                     <ReactList
                         itemRenderer={this.renderItem.bind(this)}
                         length={this.state.datasets.length}
-                        type='uniform'
+                        type='simple'
                     />
                 </div>
             </div>
         );
     }
 }
+
+module.exports = Radium(DatasetsScrollList);

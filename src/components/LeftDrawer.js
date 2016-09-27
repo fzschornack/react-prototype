@@ -1,11 +1,22 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import Radium from 'radium'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-export default class LeftDrawer extends React.Component {
+var styles = {
+    drawerContainer: {
+        backgroundColor: '#263238'
+    },
+    menuItem: {
+        color: 'white',
+        fontWeight: 300
+    }
+};
+
+class LeftDrawer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,17 +50,21 @@ export default class LeftDrawer extends React.Component {
         return (
             <div>
                 {!this.state.docked &&
-                <RaisedButton
-                    label="Toggle Drawer"
+                <IconButton
                     onTouchTap={this.handleToggle}
-                />}
+                    iconClassName="material-icons">
+                    menu
+                </IconButton>}
                 <Drawer docked={this.state.docked}
                         open={this.state.open}
-                        onRequestChange={(open) => this.setState({open})}>
-                    <MenuItem onTouchTap={this.handleClose.bind(this)}>Menu Item</MenuItem>
-                    <MenuItem onTouchTap={this.handleClose.bind(this)}>Menu Item 2</MenuItem>
+                        onRequestChange={(open) => this.setState({open})}
+                        containerStyle={styles.drawerContainer}>
+                    <MenuItem onTouchTap={this.handleClose.bind(this)} style={styles.menuItem}>Filters</MenuItem>
+                    <MenuItem onTouchTap={this.handleClose.bind(this)} style={styles.menuItem}>Collaborations</MenuItem>
                 </Drawer>
             </div>
         );
     }
 }
+
+module.exports = Radium(LeftDrawer);
