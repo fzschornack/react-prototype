@@ -1,8 +1,7 @@
 import React from 'react';
 import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import SampleHeaders from './SampleHeaders'
-import AnimatableSample from './AnimatableSample'
+import DatasetTable from './DatasetTable'
 import {greenA400} from 'material-ui/styles/colors';
 
 var styles = {
@@ -30,14 +29,14 @@ export default class DatasetCard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {expanded: false};
+        this.state = {showSample: false};
     }
 
-    handleToggle = () => this.setState({expanded: !this.state.expanded});
+    handleToggle = () => this.setState({showSample: !this.state.showSample});
 
     render() {
         return (
-            <Card expanded={this.state.expanded}>
+            <Card>
                 <CardTitle
                     title={this.props.title}
                     titleStyle={styles.titleStyle} />
@@ -46,19 +45,14 @@ export default class DatasetCard extends React.Component {
                 </CardText>
                 <CardActions>
                     <IconButton iconClassName="material-icons" iconStyle={styles.icon}>search</IconButton>
-                    <IconButton onTouchTap={this.handleToggle}
-                                iconClassName="material-icons"
-                                iconStyle={styles.icon}>
-                        visibility
-                    </IconButton>
+                    <IconButton onTouchTap={this.handleToggle} iconClassName="material-icons" iconStyle={styles.icon}>visibility</IconButton>
                     <IconButton iconClassName="material-icons" iconStyle={styles.icon}>dashboard</IconButton>
                     <IconButton iconClassName="material-icons" iconStyle={styles.icon}>add_shopping_cart</IconButton>
                 </CardActions>
                 <CardText>
-                    <SampleHeaders headers={this.props.processedSample.headers} />
-                </CardText>
-                <CardText expandable={true}>
-                    <AnimatableSample rows={this.props.processedSample.rows} />
+                    <DatasetTable showSample={this.state.showSample}
+                                      headers={this.props.processedSample.headers}
+                                      rows={this.props.processedSample.rows} />
                 </CardText>
             </Card>
         );
